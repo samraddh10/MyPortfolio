@@ -353,7 +353,11 @@ export async function initScene() {
     setGrainProj();
   }
   if (tier === 0) applyTier();
-  const perf = { sum: 0, n: 0, start: performance.now() };
+  // Frame timing, sampled in windows of 45 frames after a 2.5 s settle. A window's median
+  // ignores one-off hitches (coming back to the tab, a GC pause), so only steady slowness
+  // lowers the quality, and steady speed raises it again up to the tier this device started on.
+  const maxTier = tier, SLOW = 0.034, FAST = 0.021;   // about 29 and 48 frames per second
+  const perf = { times: [], start: performance.now(), good: 0, drops: [0, 0, 0] };
 
   const S = { x: 0, y: 0, z: 0, s: 0, qx: 0, qy: 0, qz: 0, qw: 1, r: 0, g: 0, b: 0 };
   const A = new Float32Array(14), B = new Float32Array(14), tq = new Float32Array(4), gq2 = new Float32Array(4);
@@ -385,6 +389,12 @@ export async function initScene() {
   let ys = scrollY, introStart = performance.now(), intro = reduceMotion || scrollY > innerHeight * 0.5 ? 1 : 0;
   let last = performance.now(), time = 0, first = true;
   const DMAX = 0.42;
+  // Back on the tab: drop the paused stretch from the clock and start a fresh timing window.
+  addEventListener('visibilitychange', () => {
+    if (document.hidden) return;
+    last = performance.now();
+    perf.times.length = 0; perf.start = last; perf.good = 0;
+  });
 
   function pickBlend(y) {
     const secs = state.sections, vh = innerHeight;
@@ -404,12 +414,18 @@ export async function initScene() {
     if (document.hidden) return;
     const raw = (now - last) / 1000, dt = Math.min(0.05, raw);
     last = now;
-    // step quality down when frames run slower than about 30 per second
-    if (tier > 0 && now - perf.start > 2500 && raw < 1) {
-      perf.sum += raw; perf.n++;
-      if (perf.n >= 45) {
-        if (perf.sum / perf.n > 0.034) { tier--; applyTier(); }
-        perf.sum = 0; perf.n = 0; perf.start = now;
+    // step quality down when frames run slower than about 30 per second; step it back up after
+    // three fast windows in a row (about 10 s), unless that tier has already been too slow twice
+    if (now - perf.start > 2500 && raw < 0.5) {
+      perf.times.push(raw);
+      if (perf.times.length >= 45) {
+        perf.times.sort((a, b) => a - b);
+        const med = perf.times[22];
+        if (med > SLOW && tier > 0) { perf.drops[tier]++; tier--; applyTier(); perf.good = 0; }
+        else if (med < FAST && tier < maxTier && perf.drops[tier + 1] < 2) {
+          if (++perf.good >= 3) { tier++; applyTier(); perf.good = 0; }
+        } else perf.good = 0;
+        perf.times.length = 0; perf.start = now;
       }
     }
     if (!reduceMotion) time += dt;
