@@ -22,7 +22,9 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+/* No visible scrollbar: the page still scrolls, and the line under the top bar shows progress */
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
 body {
   margin: 0;
   background:
