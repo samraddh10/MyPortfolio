@@ -51,7 +51,7 @@
       "source": "https://github.com/samraddh10/http-1.1_Scratch",
       "scene": "wire",
       "theme": "terminal",
-      "sceneNote": "Each row is one keep-alive connection and each block a request on it. The highlighted slice is the request head, the part the parser reads first.",
+      "sceneNote": "",
       "sample": "GET /echo/25?burst=1 HTTP/1.1\r\nHost: localhost:3000\r\nConnection: keep-alive\r\n\r\n",
       "images": [
         {
@@ -87,7 +87,7 @@
       "source": "https://github.com/samraddh10/Search_Engine",
       "scene": "globe",
       "theme": "nebula",
-      "sceneNote": "Scroll to turn the globe. The highlighted trails are a crawler following links from page to page, and the ring is the index it builds.",
+      "sceneNote": "",
       "sample": "",
       "images": [
         {
@@ -129,7 +129,7 @@
       "source": "https://github.com/samraddh10/pit-wall-rag",
       "scene": "car",
       "theme": "pitlane",
-      "sceneNote": "The same dots, rebuilt as a car. Pit Wall answers questions about the rulebook these cars race under.",
+      "sceneNote": "",
       "sample": "",
       "images": [
         {
