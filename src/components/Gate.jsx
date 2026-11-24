@@ -7,7 +7,7 @@ export function Gate({ name, line }) {
     <div className="gate" id="gate" role="dialog" aria-modal="true" aria-label="Welcome" onClick={enterPortfolio}>
       <div className="gate-inner">
         <NameLines as="p" className="gate-name" name={name} />
-        <p className="gate-line">{line || 'Backend systems, built from the socket up.'}</p>
+        {line && <p className="gate-line">{line}</p>}
         <div className="gate-row">
           <button type="button" className="gate-enter" id="gate-enter">Enter the portfolio</button>
           <p className="gate-hint">
