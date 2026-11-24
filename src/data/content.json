@@ -66,7 +66,7 @@
       "id": "wisp",
       "name": "Wisp",
       "tagline": "A full-text search engine with no search library",
-      "description": "A crawler, text pipeline, inverted index and BM25 ranker, all hand-written in TypeScript. It indexes developer docs from MDN, Python and React. Search “closure scope” and MDN’s Closures guide comes first, with nothing hand-tuned.",
+      "description": "A crawler, text pipeline, inverted index and BM25 ranker, all hand-written in TypeScript. It indexes developer docs from MDN, Python and React. Search “async await” and the top three results are MDN’s pages on that exact pair, with nothing hand-tuned.",
       "facts": [
         {
           "value": "1,846",
@@ -92,15 +92,21 @@
       "images": [
         {
           "src": "wisp-1.webp",
-          "alt": "Wisp results for “closure scope” with MDN’s Closures guide ranked first and matching words highlighted",
-          "w": 1400,
-          "h": 1018
+          "alt": "Wisp results for “async await”, with MDN’s async and await pages ranked first and matching words highlighted",
+          "w": 1024,
+          "h": 912
         },
         {
           "src": "wisp-2.webp",
-          "alt": "Wisp autocomplete suggestions in dark mode",
+          "alt": "Wisp start screen naming the indexed sources and offering example queries",
+          "w": 1024,
+          "h": 730
+        },
+        {
+          "src": "wisp-3.webp",
+          "alt": "Wisp autocomplete suggestions for the prefix “async”",
           "w": 1400,
-          "h": 1018
+          "h": 998
         }
       ]
     },
